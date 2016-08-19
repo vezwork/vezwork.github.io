@@ -141,7 +141,9 @@
   var test = 'result.rgb -= pinch/4.;'
   var bubby = ' '
   //templateHTML(document.getElementById('shader-fs'))
-  document.requestFullscreen()
+  document.body.addEventListener("click",function() {
+    document.body.requestFullscreen();
+  })
 
 
   var pinch = 0;
