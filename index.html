@@ -141,20 +141,25 @@
   var test = 'result.rgb -= pinch/4.;'
   var bubby = ' '
   //templateHTML(document.getElementById('shader-fs'))
+  document.requestFullscreen()
 
 
   var pinch = 0;
   var audio;
 
-  // Leap.loop({enableGestures: false}, function(frame) {
-  //   if (frame.hands.length > 0) {
-  //     pinch = frame.hands[0].pinchStrength
-  //
-  //     //document.getElementById("fire_canvas").mover(handVector[0]/10, 0 ,15-handVector[1]/10);
-  //   } else {
-  //     pinch = 0
-  //   }
-  // });
+  Leap.loop({enableGestures: false}, function(frame) {
+    if (frame.hands.length > 0) {
+      var handVector = frame.hands[0].palmPosition
+      pinch = frame.hands[0].pinchStrength
+
+      //document.getElementById("fire_canvas").mover(handVector[0]/10, 0 ,15-handVector[1]/10);
+      //document.getElementById("fire_canvas2").mover(handVector[0]/10, 0 ,15-handVector[1]/10);
+      //document.getElementById("fire_canvas3").mover(handVector[0]/10, 0 ,15-handVector[1]/10);
+      //document.getElementById("fire_canvas4").mover(handVector[0]/10, 0 ,15-handVector[1]/10);
+    } else {
+      pinch = 0
+    }
+  });
 
   var uniforms = [{
     name: 'audio',
@@ -190,6 +195,7 @@
 
     }).catch(function(e) {
       console.log(e);
+
     });
 
   }
