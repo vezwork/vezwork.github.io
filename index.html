@@ -141,9 +141,7 @@
   var test = 'result.rgb -= pinch/4.;'
   var bubby = ' '
   //templateHTML(document.getElementById('shader-fs'))
-  document.body.addEventListener("click",function() {
-    document.body.requestFullscreen();
-  })
+
 
 
   var pinch = 0;
@@ -186,6 +184,9 @@
   window.onload = function() {
 
     initAudio().then((result)=> {
+      document.body.addEventListener("click",function() {
+        document.body.requestFullscreen();
+      })
 
       audio = result;
       updateUniforms();
