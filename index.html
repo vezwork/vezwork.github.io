@@ -133,9 +133,9 @@
 <script type="text/javascript" src="/scripts/priority_queue.js"></script>
 <script type="text/javascript" src="/scripts/gl_context.js"></script>
 <script type="text/javascript" src="/scripts/scene_graph.js"></script>
-<script src="/scripts/ctrl.js"></script>
-<script src="volume-meter.js"></script>
-<script src="leap-0.6.4.min.js"></script>
+<script type="text/javascript" src="/scripts/ctrl.js"></script>
+<script type="text/javascript" src="/scripts/volume-meter.js"></script>
+<script type="text/javascript" src="/scripts/leap-0.6.4.min.js"></script>
 <script type="text/javascript">
 
   var test = 'result.rgb -= pinch/4.;'
@@ -176,17 +176,32 @@
   }
 
   function updateUniforms() {
-    uniforms[0].value = audio.volume;
+    //uniforms[0].value = audio.volume;
+    uniforms[0].value -= (uniforms[0].value - audio.volume)*0.2;
+    console.log('update unis')
+    if (document.getElementById("fire_canvas").mover) {
+      document.getElementById("fire_canvas").mover(5, 0 ,0);
+      document.getElementById("fire_canvas2").mover(5, 0 ,0);
+      document.getElementById("fire_canvas3").mover(5, 0 ,0);
+      document.getElementById("fire_canvas4").mover(5, 0 ,0);
+    }
+
+
     uniforms[1].value = pinch;
     window.requestAnimationFrame(updateUniforms);
   }
 
   window.onload = function() {
 
+    document.body.addEventListener("click",function() {
+      console.log(document.body);
+      document.body.webkitRequestFullscreen();
+
+    });
+
     initAudio().then((result)=> {
-      document.body.addEventListener("click",function() {
-        document.body.requestFullscreen();
-      })
+
+
 
       audio = result;
       updateUniforms();

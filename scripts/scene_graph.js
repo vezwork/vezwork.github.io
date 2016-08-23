@@ -534,18 +534,18 @@ function LookAtCameraNode(canvas, worldMatrixId) {
   this._matrix = mat4.lookAt([ 0, 0, 10 ], [ 0, 0, 0 ], [ 0, 1, 0 ])
   this._delta_matrix = mat4.identity()
   var self = this;
-  canvas.onmousedown = function(event) {
-    self.startDrag(event);
-  }
-  canvas.onmouseup = function(event) {
-    self.stopDrag(event);
-  }
-  canvas.onmousemove = function(event) {
-    self.mouseMove(event);
-  }
-  canvas.onmousewheel = function(event) {
-    self.mouseWheel(event);
-  }
+  // canvas.onmousedown = function(event) {
+  //   self.startDrag(event);
+  // }
+  // canvas.onmouseup = function(event) {
+  //   self.stopDrag(event);
+  // }
+  // canvas.onmousemove = function(event) {
+  //   self.mouseMove(event);
+  // }
+  // canvas.onmousewheel = function(event) {
+  //   self.mouseWheel(event);
+  // }
   canvas.mover = function(x,y,zoom) {
     self.moveMe(x,y,zoom);
   }
