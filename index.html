@@ -78,20 +78,28 @@
     // relatively stable at the base of the fire and volital at the
     // top.
     float offset = sqrt(st.y) * magnatude * turbulence(loc);
-    st.y += offset; //makes it FIERY!!
+    st.y += offset*(1.+pinch*15.); //makes it FIERY!!
 
-    // TODO: Update fireProfile texture to have a black row of pixels.
     if (st.y > 1.0) {
       return vec4(0, 0, 0, 1);
     }
 
-    st.x = st.x*(1.7-audio*2.7);
-    st.y = st.y*(1.7-audio*2.7);
+    st.x = st.x*(1.7-audio*2.);
+    st.y = st.y*(1.7-audio*2.);
 
     vec4 result = texture2D(fireProfile, st);
     //vec4 result = vec4(0., 0., loc.x-loc.z*sin(time), 1.);
-    result.b = result.r*sin(time);
-    result.rgb -= pinch/4.;
+
+    //variables to play with:
+    //loc: vec3 containing the x, z, and a (useless) y of the position of the fire in the worldCoord
+    //time: around 0.18/s
+    //pinch: 0-1
+    //result: sampling result on the fire texture (rgb)
+
+    //color changing
+    result.b = result.g*sin(time*8.);
+    result.g = result.g*(cos(time*2.2)*1.5+1.);
+    //result.rgb -= pinch/4.;
 
     // Fading out bottom so slice clipping isnt obvious
     if (st.y < .1) {
@@ -100,7 +108,6 @@
     return result;
   }
 
-  uniform vec3 eye;
   varying vec3 texOut;
   varying vec3 worldCoord;
   void main(void) {
@@ -152,6 +159,7 @@
       var handVector = frame.hands[0].palmPosition
       pinch = frame.hands[0].pinchStrength
 
+      //allow leap control of 3d position and rotation of fire
       //document.getElementById("fire_canvas").mover(handVector[0]/10, 0 ,15-handVector[1]/10);
       //document.getElementById("fire_canvas2").mover(handVector[0]/10, 0 ,15-handVector[1]/10);
       //document.getElementById("fire_canvas3").mover(handVector[0]/10, 0 ,15-handVector[1]/10);
@@ -161,7 +169,7 @@
     }
   });
 
-  var uniforms = [{
+  var uniforms = [{ //time is automatically added as a uniform
     name: 'audio',
     value: 0.0,
     type: '1f'
@@ -182,13 +190,14 @@
   }
 
   function updateUniforms() {
+
     //uniforms[0].value = audio.volume;
-    uniforms[0].value -= (uniforms[0].value - audio.volume)*0.1;
-    console.log('update unis')
-
-    moveFire(2.5,0,0);
-
+    uniforms[0].value -= (uniforms[0].value - audio.volume)*0.2;
     uniforms[1].value = pinch;
+
+    moveFire(2.5,0,0); //fire constantly spins
+
+
     window.requestAnimationFrame(updateUniforms);
   }
 
@@ -201,8 +210,6 @@
     });
 
     initAudio().then((result)=> {
-
-
 
       audio = result;
       updateUniforms();
