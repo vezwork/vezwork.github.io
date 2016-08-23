@@ -172,20 +172,21 @@
   }]
 
   var options = {
-    uniforms: uniforms
+    uniforms: uniforms,
+    timeRate: 5000.0,                       //lower mumber = faster fire
+    clearColor: [0.0, 0.0, 0.0, 0.0],
+    camAngle: 45,
+    camPos: [0.0, 0.5, 5],
+    canvasSize: {height: 450, width: 450},
+    texPath: "/textures/firetex2.png"
   }
 
   function updateUniforms() {
     //uniforms[0].value = audio.volume;
-    uniforms[0].value -= (uniforms[0].value - audio.volume)*0.2;
+    uniforms[0].value -= (uniforms[0].value - audio.volume)*0.1;
     console.log('update unis')
-    if (document.getElementById("fire_canvas").mover) {
-      document.getElementById("fire_canvas").mover(5, 0 ,0);
-      document.getElementById("fire_canvas2").mover(5, 0 ,0);
-      document.getElementById("fire_canvas3").mover(5, 0 ,0);
-      document.getElementById("fire_canvas4").mover(5, 0 ,0);
-    }
 
+    moveFire(2.5,0,0);
 
     uniforms[1].value = pinch;
     window.requestAnimationFrame(updateUniforms);

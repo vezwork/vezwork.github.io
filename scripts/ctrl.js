@@ -29,6 +29,8 @@ function initAudio() {
 
 function initFire(canvasId, options={}) {
   options.clearColor = options.clearColor || [0.0, 0.0, 0.0, 0.0]
+  options.texPath = options.texPath || "/textures/firetex3.png"
+  options.timeRate = options.timeRate || 2200.0
   options.camAngle = options.camAngle || 45
   options.camPos = options.camPos || [0.0, 0.5, 4.8]
   options.canvasSize = options.canvasSize || {height: 450, width: 450}
@@ -63,7 +65,7 @@ function initFire(canvasId, options={}) {
 
   var shaderNode = new ShaderNode("shader-vs", "shader-fs", [
       new TextureNode(0, "/textures/nzw.png", "nzw", gl.LINEAR, gl.REPEAT),
-      new TextureNode(1, "/textures/firetex2.png", "fireProfile", gl.LINEAR,
+      new TextureNode(1, options.texPath, "fireProfile", gl.LINEAR,
           gl.CLAMP_TO_EDGE),
       new FunctionNode(function(context) {
         if (!this.time) this.time = 0;
@@ -71,7 +73,7 @@ function initFire(canvasId, options={}) {
         var time_loc = context.gl.getUniformLocation(
             context.getShaderProgram(), "time");
         this.time += context.timeDeltaMs;
-        context.gl.uniform1f(time_loc, this.time / 1000.0);
+        context.gl.uniform1f(time_loc, this.time / options.timeRate);
 
         //var pinch_loc = context.gl.getUniformLocation(
         //  context.getShaderProgram(), "pinch");
@@ -144,4 +146,13 @@ function templateHTML(el, object=this) {
     pos = tempEnd+1
   }
   el.innerHTML = text
+}
+
+function moveFire(x, y, z) {
+  if (document.getElementById("fire_canvas").mover) {
+    document.getElementById("fire_canvas").mover(2.5, 0 ,0);
+    document.getElementById("fire_canvas2").mover(2.5, 0 ,0);
+    document.getElementById("fire_canvas3").mover(2.5, 0 ,0);
+    document.getElementById("fire_canvas4").mover(2.5, 0 ,0);
+  }
 }
