@@ -27,7 +27,11 @@ function initAudio() {
   })
 }
 
+var fireNum = 0;
+
 function initFire(canvasId, options={}) {
+
+
   options.clearColor = options.clearColor || [0.0, 0.0, 0.0, 0.0]
   options.texPath = options.texPath || "/textures/firetex3.png"
   options.timeRate = options.timeRate || 2200.0
@@ -36,7 +40,14 @@ function initFire(canvasId, options={}) {
   options.canvasSize = options.canvasSize || {height: 450, width: 450}
   options.uniforms = options.uniforms || [{ name: "dog", value: 0.01, type: "1f"}]
 
+  //canvas sizing and rotating
+  var el = document.getElementById(canvasId);
+  el.style.transform =  'rotate(' + 90*fireNum + 'deg)';
+  el.style.left = Math.round((Math.sin(fireNum*Math.PI/2) + 1) * options.canvasSize.width * 0.6666) + "px";
+  el.style.top = Math.round((Math.cos(fireNum*Math.PI/2+Math.PI) + 1) * options.canvasSize.height * 0.6666) + "px";;
+  fireNum++;
 
+  //gl set up
   var gl = newGLContext(canvasId, options.canvasSize.width, options.canvasSize.height);
   var context = new DrawingContext(gl);
 
