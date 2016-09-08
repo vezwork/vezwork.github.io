@@ -37,21 +37,21 @@ function initFire(canvasId, options={}) {
   options.timeRate = options.timeRate || 2200.0
   options.camAngle = options.camAngle || 45
   options.camPos = options.camPos || [0.0, 0.5, 4.8]
-  options.canvasSize = options.canvasSize || {height: 450, width: 450}
+  options.canvasPos = options.canvasPos || {x:0, y:0, height: 450, width: 450}
   options.uniforms = options.uniforms || [{ name: "dog", value: 0.01, type: "1f"}]
 
   //canvas sizing and rotating
   var el = document.getElementById(canvasId);
   console.log(90*(fireNum-0.5))
   el.style.transform =  'rotate(' + 90*(fireNum-0.5) + 'deg)';
-  //el.style.left = Math.round((Math.sin((fireNum)*Math.PI/2) + 1) * options.canvasSize.width * 0.6666) + "px";
-  //el.style.top = Math.round((Math.cos((fireNum)*Math.PI/2+Math.PI) + 1) * options.canvasSize.height * 0.6666) + "px";
-  el.style.left = (Math.ceil(fireNum/2)%2) * options.canvasSize.width * 1 + "px";
-  el.style.top = Math.floor(fireNum/2) * options.canvasSize.width * 1 + "px";
+  //el.style.left = Math.round((Math.sin((fireNum)*Math.PI/2) + 1) * options.canvasPos.width * 0.6666) + "px";
+  //el.style.top = Math.round((Math.cos((fireNum)*Math.PI/2+Math.PI) + 1) * options.canvasPos.height * 0.6666) + "px";
+  el.style.left = (Math.ceil(fireNum/2)%2) * options.canvasPos.width * 1 + options.canvasPos.x + "px";
+  el.style.top = Math.floor(fireNum/2) * options.canvasPos.width * 1 + options.canvasPos.y + "px";
   fireNum++;
 
   //gl set up
-  var gl = newGLContext(canvasId, options.canvasSize.width, options.canvasSize.height);
+  var gl = newGLContext(canvasId, options.canvasPos.width, options.canvasPos.height);
   var context = new DrawingContext(gl);
 
   gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
