@@ -99,7 +99,7 @@
     //color changing
     result.b = (result.g+result.r)*sin(time)*2.;
     result.g = result.g + result.g*(cos(time*2.2)*1.5+1.)*.7;
-    //result.rgb -= pinch/4.;
+    result.rgb -= pinch/4.;
 
     // Fading out bottom so slice clipping isnt obvious
     if (st.y < .1) {
