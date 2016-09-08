@@ -185,7 +185,7 @@
     clearColor: [0.0, 0.0, 0.0, 0.0],
     camAngle: 45,
     camPos: [0.0, 0.5, 5],
-    canvasPos: {x:-100, y:100, height: 450, width: 450},
+    canvasPos: {x:0, y:0, height: 450, width: 450},
     texPath: "/textures/firetex2.png"
   }
 
@@ -202,6 +202,9 @@
   }
 
   window.onload = function() {
+
+    options.canvasPos.x = window.innerWidth/2 - options.canvasPos.width;
+    options.canvasPos.y = window.innerHeight/2 - options.canvasPos.height;
 
     document.body.addEventListener("click",function() {
       console.log(document.body);
