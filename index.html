@@ -84,8 +84,8 @@
       return vec4(0, 0, 0, 1);
     }
 
-    st.x = st.x*(1.7-audio*2.);
-    st.y = st.y*(1.7-audio*2.);
+    st.x = st.x*(1.7-audio*2.)/1.5;
+    st.y = st.y*(1.7-audio*2.)/1.5;
 
     vec4 result = texture2D(fireProfile, st);
     //vec4 result = vec4(0., 0., loc.x-loc.z*sin(time), 1.);
