@@ -43,11 +43,11 @@ function initFire(canvasId, options={}) {
   //canvas sizing and rotating
   var el = document.getElementById(canvasId);
   console.log(90*(fireNum-0.5))
-  el.style.transform =  'rotate(' + 90*(fireNum-0.5) + 'deg)';
+  el.style.transform =  'rotate(' + 90*(fireNum-0.5) + 'deg) scale(2,2)';
   //el.style.left = Math.round((Math.sin((fireNum)*Math.PI/2) + 1) * options.canvasPos.width * 0.6666) + "px";
   //el.style.top = Math.round((Math.cos((fireNum)*Math.PI/2+Math.PI) + 1) * options.canvasPos.height * 0.6666) + "px";
-  el.style.left = (Math.ceil(fireNum/2)%2) * options.canvasPos.width * 1 + options.canvasPos.x + "px";
-  el.style.top = Math.floor(fireNum/2) * options.canvasPos.width * 1 + options.canvasPos.y + "px";
+  el.style.left = ((Math.ceil(fireNum/2)%2) * options.canvasPos.width * 1 + options.canvasPos.x)*2 + "px";
+  el.style.top = (Math.floor(fireNum/2) * options.canvasPos.width * 1 + options.canvasPos.y)*2 + "px";
   fireNum++;
 
   //gl set up
