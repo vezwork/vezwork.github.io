@@ -203,8 +203,10 @@
 
   window.onload = function() {
 
+    options.canvasPos.height = options.canvasPos.width = screen.width/2;
     options.canvasPos.x = screen.width/2 - options.canvasPos.width;
     options.canvasPos.y = screen.height/2 - options.canvasPos.height;
+
 
     document.body.addEventListener("click",function() {
       console.log(document.body);
