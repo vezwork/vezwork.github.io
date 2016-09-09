@@ -203,17 +203,17 @@
 
   window.onload = function() {
 
-    options.canvasPos.height = options.canvasPos.width = 700;
+    options.canvasPos.height = options.canvasPos.width = 650;
     options.canvasPos.x = screen.width/2 - options.canvasPos.width + 1000;
     options.canvasPos.y = screen.height/2 - options.canvasPos.height;
 
 
 
-    document.body.addEventListener("click",function() {
-      console.log(document.body);
-      document.body.webkitRequestFullscreen();
+    //document.body.addEventListener("click",function() {
+    //  console.log(document.body);
+    //  document.body.webkitRequestFullscreen();
 
-    });
+    //});
 
     initAudio().then((result)=> {
 
