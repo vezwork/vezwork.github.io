@@ -157,8 +157,9 @@
   Leap.loop({enableGestures: false}, function(frame) {
     if (frame.hands.length > 0) {
       var handVector = frame.hands[0].palmPosition
-      pinch = frame.hands[0].pinchStrength
-
+      //pinch = frame.hands[0].pinchStrength
+      pinch = handVector[2]
+  
       //allow leap control of 3d position and rotation of fire
       //document.getElementById("fire_canvas").mover(handVector[0]/10, 0 ,15-handVector[1]/10);
       //document.getElementById("fire_canvas2").mover(handVector[0]/10, 0 ,15-handVector[1]/10);
@@ -204,8 +205,8 @@
   window.onload = function() {
 
     options.canvasPos.height = options.canvasPos.width = 650;
-    options.canvasPos.x = screen.width/2 - options.canvasPos.width + 1000;
-    options.canvasPos.y = screen.height/2 - options.canvasPos.height;
+    //options.canvasPos.x = screen.width/2 - options.canvasPos.width + 1000;
+    //options.canvasPos.y = screen.height/2 - options.canvasPos.height;
 
 
 
