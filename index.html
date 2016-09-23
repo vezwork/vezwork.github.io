@@ -205,8 +205,8 @@
   window.onload = function() {
 
     options.canvasPos.height = options.canvasPos.width = 650;
-    //options.canvasPos.x = screen.width/2 - options.canvasPos.width + 1000;
-    //options.canvasPos.y = screen.height/2 - options.canvasPos.height;
+    options.canvasPos.x = 150;
+    options.canvasPos.y = 150;
 
 
 
@@ -235,9 +235,14 @@
 </script>
 <title>Procedural Volumetric Fire</title>
 <style>
+html {
+    height: 100%;
+}
 body {
   margin: 0;
+  height: 100%;
   background: black;
+  overflow:hidden;
 }
 
 canvas {
