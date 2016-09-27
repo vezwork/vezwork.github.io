@@ -158,7 +158,8 @@
     if (frame.hands.length > 0) {
       var handVector = frame.hands[0].palmPosition
       //pinch = frame.hands[0].pinchStrength
-      pinch = handVector[2]
+      pinch = Math.max(1-handVector[1]/400, 0)
+      console.log(pinch)
   
       //allow leap control of 3d position and rotation of fire
       //document.getElementById("fire_canvas").mover(handVector[0]/10, 0 ,15-handVector[1]/10);
@@ -194,7 +195,8 @@
 
     //uniforms[0].value = audio.volume;
     uniforms[0].value -= (uniforms[0].value - audio.volume)*0.2;
-    uniforms[1].value = pinch;
+    uniforms[1].value -= (uniforms[1].value - pinch)*0.2;
+    console.log(uniforms[1].value)
 
     moveFire(2.5,0,0); //fire constantly spins
 
@@ -205,7 +207,7 @@
   window.onload = function() {
 
     options.canvasPos.height = options.canvasPos.width = 650;
-    options.canvasPos.x = 70;
+    options.canvasPos.x = 80;
     options.canvasPos.y = 50;
 
 
