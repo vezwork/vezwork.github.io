@@ -1,0 +1,12 @@
+body {
+    background: black;
+}
+
+canvas {
+    background: white;
+}
+
+canvas:focus {
+    box-shadow:none;
+    outline: none;
+}
