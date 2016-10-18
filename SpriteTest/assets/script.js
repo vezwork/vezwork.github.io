@@ -3,7 +3,7 @@
 //game control system on top of:
 //canvas
 
-//new magnaGame(canvas)
+//easy to use networking support?
 
 //rooms
 
@@ -42,7 +42,7 @@ class simpleText extends Drawable {
             ctx.font = this.font
         if (this.color)
             ctx.fillStyle = this.color
-        
+        ctx.textBaseline = "top"
         const {width} = ctx.measureText(this.text)
         const centerOffsetWidth = this.x|0
         const centerOffsetHeight = this.y|0
@@ -74,6 +74,12 @@ class Sprite extends Drawable {
                 ctx.save()
                 ctx.translate(centerOffsetWidth, centerOffsetHeight)
                 ctx.rotate(this.rot)
+                if (this.mirrorX && this.mirrorY) 
+                    ctx.scale(-1,-1)
+                else if (this.mirrorX)
+                    ctx.scale(-1,1)
+                else if (this.mirrorY)
+                    ctx.scale(1,-1)
                 ctx.translate(-centerOffsetWidth, -centerOffsetHeight)
                 ctx.drawImage(this.image, this.x|0, this.y|0, this.width|0, this.height|0)
                 ctx.restore()
@@ -212,18 +218,20 @@ class RenderLoop {
             window.requestAnimationFrame(this._loop.bind(this))
     }
     
-    addDrawable(name, sprite, depth=0) {
+    addDrawable(name, drawable, depth=0) {
         if (!name)
             throw new TypeError("Parametererror: name required!")
-        if (!sprite)
-            throw new TypeError("Parametererror: sprite required!")
-        if (!(sprite instanceof Drawable))
-            throw new TypeError("Parametererror: sprite must be an instance of Sprite!")
+        if (!drawable)
+            throw new TypeError("Parametererror: drawable required!")
+        if (!(drawable instanceof Drawable))
+            throw new TypeError("Parametererror: drawable must be an instance of Drawable!")
+        if (this._spriteHash[name] !== undefined)
+            throw new Error("Drawable with this name already exists")
         
-        this._spriteHash[name] = sprite
+        this._spriteHash[name] = drawable
         this._spriteHash[name]._rl_depth = depth
         //insert into array at proper position
-        this._spliceSprite(sprite)
+        this._spliceSprite(drawable)
         
         return this
     }
@@ -266,6 +274,28 @@ class RenderLoop {
         //update index counter of sprites being pushed up by insertion
         for (let i = low+1; i < this._spriteArr.length; i++) {
             this._spriteArr[i]._rl_index++
+        }
+    }
+}
+
+class DebugRenderLoop extends RenderLoop {
+    constructor(canvas) {
+        super(canvas)
+        this._debug = {}
+        this._debug.lastSecond = window.performance.now()
+        this._debug.framesThisSecond = 0
+        this.addDrawable("_debug_fps", new simpleText("FPS: calculating...", 10, 10, 0), 1000)
+    }
+    
+    _loop() {
+        super._loop()
+        if (this._debug) {
+            this._debug.framesThisSecond++
+            if (window.performance.now() > this._debug.lastSecond + 1000) {
+                this._spriteHash._debug_fps.text = "FPS: " + this._debug.framesThisSecond
+                this._debug.lastSecond = window.performance.now()
+                this._debug.framesThisSecond = 0
+            }
         }
     }
 }
@@ -337,6 +367,7 @@ class Input {
         //IDEAs:
         //gamepad
         //touch vs mouse (perhaps gestures too)
+        //tilt
         
         //disable the context menu
         el.oncontextmenu=e=>e.preventDefault()
@@ -444,5 +475,50 @@ class Input {
             case 'right': return 2
         }
     }
+}
+
+//TESTING:
+
+const pool = new ImageLoadPool()
+const img1 = pool.addImage('http://vignette2.wikia.nocookie.net/minecraft/images/f/f0/Minecraft_Items.png/revision/latest?cb=20140102042917')
+const img2 = pool.addImage('https://tcrf.net/images/thumb/b/bf/Undertale_toby_dog.gif/50px-Undertale_toby_dog.gif')
+const img3 = pool.addImage('http://www.mariowiki.com/images/e/ee/Ludwig_Idle.gif')  
+pool.start()
+pool.onComplete = () => {
+    
+    const renderLoop = new DebugRenderLoop(document.getElementById("canvas"))
+    const input = new Input(document.getElementById("canvas"))
+
+    renderLoop.addDrawable("mc", new Sprite(new SpriteSheet(img1, 16, 16), 32, 32, 0, 64, 64, 0),3)
+              .addDrawable("doggy", new Sprite(img2, 150, 150), 4)
+              .addDrawable("ludwig", new Sprite(img3, 50, 50), 0)
+              .addDrawable("text", new simpleText("yo what up son", 200, 200, 0.1), 0)
+              .addDrawable("text2", new simpleText("press left and right", 110, 240, -0.1, "30px Comic Sans MS", "blue"), 0)
+              .addDrawable("text3", new simpleText("and up and down", 120, 270, -0.1, "30px Comic Sans MS", "crimson"), 0)
+              
+    renderLoop.onDrawStart = function() {
+        if (input.checkKey('arrowleft') || input.checkKey('a')) {
+            renderLoop.getDrawable("ludwig").x -=2
+            renderLoop.getDrawable("ludwig").mirrorX = false
+        }
+        if (input.checkKey('arrowright') || input.checkKey('d')) {
+            renderLoop.getDrawable("ludwig").x +=2
+            renderLoop.getDrawable("ludwig").mirrorX = true
+        }
+        if (input.checkKey('arrowdown') || input.checkKey('a')) {
+            renderLoop.getDrawable("ludwig").y -=2
+        }
+        if (input.checkKey('arrowup') || input.checkKey('d')) {
+            renderLoop.getDrawable("ludwig").y +=2
+        }
+        //renderLoop.getDrawable("ludwig").y = Math.sin(renderLoop.getDrawable("ludwig").x/5) * 3 + 30
+        renderLoop.getDrawable("ludwig").rot = Math.sin(renderLoop.getDrawable("ludwig").y/5 + renderLoop.getDrawable("ludwig").x/5) / 4
+        
+        renderLoop.getDrawable("mc").height += 0.2
+    }
+    
+    input.onMouse("down", (a)=>{
+        console.log(input.mousePos.x, input.mousePos.y, input.checkKey('b'))
+    }, 'left')
 }
 
