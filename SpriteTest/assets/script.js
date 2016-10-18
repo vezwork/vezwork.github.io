@@ -300,14 +300,14 @@ class DebugRenderLoop extends RenderLoop {
     }
 }
 
-class ImageLoadPool {
+class MediaLoadPool {
     
     constructor() {
         
         this._total = 0
         this._progress = 0
 
-        this._images = []
+        this._loadArr = []
         
         this.onProgress = function(){}
         this.onComplete = function(){}
@@ -316,7 +316,7 @@ class ImageLoadPool {
     addImage(src) {
         this._total++
         const temp = new Image()
-        this._images.push({img: temp, src: src})
+        this._loadArr.push({obj: temp, src: src})
         
         temp.onload = (function() {
             this._progress++
@@ -333,9 +333,30 @@ class ImageLoadPool {
         return temp
     }
     
+    addAudio(src) {
+        this._total++
+        const temp = new Audio()
+        temp.preload = 'auto'
+        this._loadArr.push({obj: temp, src: src})
+        
+        temp.oncanplaythrough = (function() {
+            this._progress++
+            if (this._progress == this._total)
+                this.onComplete()
+            else
+                this.onProgress()
+        }).bind(this)
+        
+        temp.onerror = function() {
+            throw new Error("Error loading audio: " + src)
+        }
+        
+        return temp
+    }
+    
     start() {
-        this._images.forEach(e=>{
-            e.img.src = e.src
+        this._loadArr.forEach(e=>{
+            e.obj.src = e.src
         })
     }
 }
@@ -479,12 +500,16 @@ class Input {
 
 //TESTING:
 
-const pool = new ImageLoadPool()
+const pool = new MediaLoadPool()
 const img1 = pool.addImage('http://vignette2.wikia.nocookie.net/minecraft/images/f/f0/Minecraft_Items.png/revision/latest?cb=20140102042917')
 const img2 = pool.addImage('https://tcrf.net/images/thumb/b/bf/Undertale_toby_dog.gif/50px-Undertale_toby_dog.gif')
 const img3 = pool.addImage('http://www.mariowiki.com/images/e/ee/Ludwig_Idle.gif')  
+
+const sound1 = pool.addAudio('https://upload.wikimedia.org/wikipedia/en/9/9f/Sample_of_%22Another_Day_in_Paradise%22.ogg')  
 pool.start()
 pool.onComplete = () => {
+    sound1.loop = true
+    sound1.play()
     
     const renderLoop = new DebugRenderLoop(document.getElementById("canvas"))
     const input = new Input(document.getElementById("canvas"))
@@ -505,10 +530,10 @@ pool.onComplete = () => {
             renderLoop.getDrawable("ludwig").x +=2
             renderLoop.getDrawable("ludwig").mirrorX = true
         }
-        if (input.checkKey('arrowdown') || input.checkKey('a')) {
+        if (input.checkKey('arrowup') || input.checkKey('a')) {
             renderLoop.getDrawable("ludwig").y -=2
         }
-        if (input.checkKey('arrowup') || input.checkKey('d')) {
+        if (input.checkKey('arrowdown') || input.checkKey('d')) {
             renderLoop.getDrawable("ludwig").y +=2
         }
         //renderLoop.getDrawable("ludwig").y = Math.sin(renderLoop.getDrawable("ludwig").x/5) * 3 + 30
