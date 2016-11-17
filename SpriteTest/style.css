@@ -4,6 +4,7 @@ body {
 
 canvas {
     background: white;
+    cursor: url(http://www.cursor.cc/cursor/410/59/cursor.png), pointer;
 }
 
 canvas:focus {
