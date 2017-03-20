@@ -1,0 +1,44 @@
+body {
+  font-family: arial;
+  background: #e2e1e0;
+}
+
+#new-input {
+  border: none;
+  height: 20px;
+  padding: 10px;
+  margin: 10px;
+  width: 305px;
+}
+
+#new-button {
+  border: none;
+  height: 40px;
+  width: 40px;
+  background: crimson;
+  color: white;
+}
+
+#task-list .task button {
+  border: none;
+  margin: 5px;
+}
+
+#task-list .task p {
+  padding: 15px;
+  display: block;
+}
+
+#task-list .task {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  min-height: 50px;
+  width: 180px;
+  margin: 10px;
+  float: left;
+  background: white;
+}
+
+#task-list .task:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
