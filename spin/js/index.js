@@ -107,9 +107,9 @@ function drawCircleOnPlanet(planet, circle) {
 }
 
 var planet = {
-    radius: c.width*2,
+    radius: Math.max(c.width, c.height) * 3,
     origin: { x: c.width/2, y: c.height/2, z: 0 },
-    rot: { x: -Math.PI/2+0.15, y: Math.PI/4 }
+    rot: { x: -Math.PI/2+0.2, y: Math.PI/4 }
 };
 var paths = [americas_path, eastern_path, madagascar_path, australia_path, british_path, iceland_path, malaysia_path, japan_path, antarctic_path];
 
@@ -134,9 +134,10 @@ function draw() {
     ctx.fillRect(0,0,c.width,c.height);
     ctx.globalCompositeOperation = "source-over";
     
-    planet.radius -= (planet.radius - 300) * 0.01;
+    planet.radius -= (planet.radius - 300) * 0.02;
+    planet.rot.y -= planet.rot.y * 0.005;
     planet.rot.x -= 0.001;
-    planet.rot.y -= 0.001;
+    
     
     requestAnimationFrame(draw);
 }
