@@ -1,0 +1,26 @@
+### 2018-03-04
+
+Just realized that collision detection (namely getting the real bounding box of the object) works against expected behavior under the following condition: 
+A Drawable is rotated some ammount such that rotation % 90 != 0. That Drawable is in a Group which has different x and y scales.
+Under these conditions the visual rectangular bounding box of the Drawable is actually skewed into what I assume is a parallelogram.
+Currently the get real bounding box method of the Drawable assumes that Drawables remain as rectangles under all available transformations.
+Since this isn't true there are some options:
+
+1. Approximate these parallelograms as rotated rectangles, this leads to incorrect and strange results but requires very little modification.
+2. Change the get real bounding box method to not return a bounding box but instead points representing the parellelogram/rectangular shape.
+And modify the SAT collision algorithm to accomodate parallelograms, may as well make it work with any convex polygon. This lowers performance
+but garauntees accuracy to the visual item. This also makes the get real bounding box method a direct mirror of the "get mouse coordinates in world" type function
+which should be easy to make by reversing this. In this case all I need is something that gets the position of a point in the parent group.
+3. Do nothing. It makes sense to only accomodate rectangular bounding boxes but this will result in very incorrect results in many cases. 
+I don't like this option but it's what I should do in this case because I am trying to put development of the game ahead of Ocru.
+
+Going to take a break for now. Was working on getting where the mouse is in the world before I got sucked into looking at the existing collisions.
+
+### 2018-04-18
+
+Went with option 2. Just finished. The API is gross but it works.
+Transformation calculations:
+https://www.symbolab.com/solver/matrix-multiply-calculator/%5Cbegin%7Bpmatrix%7D1%260%26a%2Bb%5C%5C%200%261%26c%2Bd%5C%5C%200%260%261%5Cend%7Bpmatrix%7D%5Cbegin%7Bpmatrix%7Dcos%5Cleft(r%5Cright)%26-sin%5Cleft(r%5Cright)%260%5C%5C%20sin%5Cleft(r%5Cright)%26cos%5Cleft(r%5Cright)%260%5C%5C%200%260%261%5Cend%7Bpmatrix%7D%5Cbegin%7Bpmatrix%7De%260%260%5C%5C%200%26f%260%5C%5C%200%260%261%5Cend%7Bpmatrix%7D%5Cbegin%7Bpmatrix%7D1%26g%260%5C%5C%20h%261%260%5C%5C%200%260%261%5Cend%7Bpmatrix%7D%5Cbegin%7Bpmatrix%7D1%260%26-b%5C%5C%200%261%26-d%5C%5C%200%260%261%5Cend%7Bpmatrix%7D%5Cbegin%7Bpmatrix%7Dx%5C%5C%20y%5C%5C%201%5Cend%7Bpmatrix%7D
+  
+inverse matrix:
+https://www.symbolab.com/solver/matrix-multiply-calculator/%5Cbegin%7Bpmatrix%7D1%260%26b%5C%5C%20%200%261%26d%5C%5C%20%200%260%261%5Cend%7Bpmatrix%7D%5Cbegin%7Bpmatrix%7D-%5Cfrac%7B1%7D%7Bgh-1%7D%26%5Cfrac%7Bg%7D%7Bgh-1%7D%260%5C%5C%20%20%5Cfrac%7Bh%7D%7Bgh-1%7D%26-%5Cfrac%7B1%7D%7Bgh-1%7D%260%5C%5C%20%200%260%261%5Cend%7Bpmatrix%7D%5Cbegin%7Bpmatrix%7D%5Cfrac%7B1%7D%7Be%7D%260%260%5C%5C%20%200%26%5Cfrac%7B1%7D%7Bf%7D%260%5C%5C%20%200%260%261%5Cend%7Bpmatrix%7D%5Cbegin%7Bpmatrix%7Dcos%5Cleft(-r%5Cright)%26-sin%5Cleft(-r%5Cright)%260%5C%5C%20%20sin%5Cleft(-r%5Cright)%26cos%5Cleft(-r%5Cright)%260%5C%5C%20%200%260%261%5Cend%7Bpmatrix%7D%5Cbegin%7Bpmatrix%7D1%260%26-%5Cleft(a%2Bb%5Cright)%5C%5C%20%200%261%26-%5Cleft(c%2Bd%5Cright)%5C%5C%20%200%260%261%5Cend%7Bpmatrix%7D%5Cbegin%7Bpmatrix%7Dx%5C%5C%20%20y%5C%5C%20%201%5Cend%7Bpmatrix%7D
