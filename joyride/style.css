@@ -1,0 +1,260 @@
+html, body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Karla', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    width:100%;
+    z-index: 99;
+    padding-top: 10px;
+}
+
+.nav-inner {
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 75px;
+}
+
+.nav-link {
+    color:white;
+    text-decoration: underline;
+}
+
+.link-list {
+    margin-left: auto;
+    position: relative;
+}
+
+.story-container {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.story-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 250px;
+    width: 750px;
+    z-index: 100;
+    text-align: center;
+    max-width: 85%;
+    visibility: hidden;
+    padding-top: 70px;
+}
+
+.story-texture {
+    position: absolute;
+    z-index: 10;
+    mix-blend-mode: multiply;
+    opacity: 0;
+    height: 100%;
+    width: 100%; 
+    background-image: url("https://s3.amazonaws.com/unode1/assets/5022/rAxcJUZQkG0vysxleCGB_gravel.png");
+    background-size: 250px 250px;
+
+    transition: opacity 1s;
+}
+
+.story-scroll-wrap {
+    position: relative;
+    display: block;
+
+    z-index: 9;
+
+    width: 100%;
+    height: 100%;
+}
+
+.story-background {
+    position: absolute;
+
+    height: 100%;
+
+    z-index: 10;
+}
+
+.svg-mountain {
+    position: absolute;
+
+    height: 100%;
+
+    bottom: 0;
+    left: 0;
+}
+
+#svg-bike {
+    position: absolute;
+
+    mix-blend-mode: multiply;
+
+    bottom: 1772px;
+    left: -113px;
+}
+
+#svg-road {
+    position: absolute;
+    bottom: 0;
+    left: 0px;
+}
+
+#svg-background {
+    position: absolute;
+    height: 100%;
+    left: 0;
+}
+
+#svg-sun1 {
+    position: absolute;
+    left: -300px;
+    top: -160px;
+}
+
+#svg-sun2 {
+    position: absolute;
+    left: 700px;
+    top: 240px;
+}
+
+.grouped-input {
+    background: white;
+    position: relative;
+    border-radius: 83px;
+    display: flex;
+    font-weight: bold;
+    margin: 0 20px;
+    justify-content: space-between;
+    box-shadow: 0px 0px 17px rgba(0, 0, 0, 0.24);
+}
+
+input {
+    border: none;
+    flex:1;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 8px solid white;
+}
+
+input:focus::placeholder {
+    color: white;
+}
+
+input:focus {
+    background-color: lightskyblue;
+}
+
+.btn-primary {
+    background-color: #FF8F51;
+    color: white;
+    border-radius: 83px;
+    border: 4px solid white;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btn-primary:focus {
+    background-color: lightskyblue;
+}
+
+.btn-primary:disabled {
+    opacity: 0.3;
+}
+
+button:hover{
+    cursor:pointer; 
+}
+
+input, button {
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+#error-invalid-email {
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-weight: bold;
+    font-style: italic;
+    display: none;
+}
+
+.text-primary {
+    color: #4A3C2F;
+}
+
+.text-lg {
+    font-size: 50px;
+}
+
+.text-sm {
+    font-size: 20px;
+}
+
+.text-md {
+    font-size: 36px;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.m-b-lg {
+    margin-bottom: 50px;
+}
+
+.m-b-md {
+    margin-bottom: 20px;
+}
+
+.m-x-auto {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (max-width: 700px) {
+    .text-lg {
+        font-size: 30px;
+    }
+    
+    .text-sm {
+        font-size: 15px;
+    }
+
+    .m-b-lg {
+        margin-bottom: 20px;
+    }
+
+    .m-b-md {
+        margin-bottom: 10px;
+    }
+
+    .btn-primary {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+
+    .grouped-input {
+        margin: 0;
+    }
+    
+}
